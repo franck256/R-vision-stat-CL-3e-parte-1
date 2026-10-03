@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>QCM de révisions – 3ème</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#fbfaf6;--ink:#1d2a44;--grid:#dfe6f2;--blue:#1f5fd1;--red:#c0392b;--ok:#1e8a4c;--okbg:#e4f5ea;--kobg:#fbe6e3;--card:#fff;--mut:#5b6785}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141a28;--ink:#e6ebf7;--grid:#222c42;--blue:#7ea8ff;--red:#ff8a7a;--ok:#5fd68f;--okbg:#17332443;--kobg:#3a1c1c;--card:#1b2336;--mut:#9aa6c4}}
+:root[data-theme="dark"]{--bg:#141a28;--ink:#e6ebf7;--grid:#222c42;--blue:#7ea8ff;--red:#ff8a7a;--ok:#5fd68f;--okbg:#17332443;--kobg:#3a1c1c;--card:#1b2336;--mut:#9aa6c4}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*:before,*:after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 Georgia,"Times New Roman",serif;
+background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px}
+main{max-width:640px;margin:0 auto;padding:20px 16px 48px;border-left:2px solid var(--red);background:color-mix(in srgb,var(--bg) 88%,transparent)}
+h1{font-size:1.6rem;margin:.2em 0 .1em}
+.sub{color:var(--mut);margin:0 0 18px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.tabs button{flex:1 1 150px;font:inherit;padding:12px;border:2px solid var(--blue);background:var(--card);color:var(--ink);border-radius:8px;cursor:pointer;text-align:left}
+.tabs button b{display:block;color:var(--blue)}
+.tabs button.on{background:var(--blue);color:#fff}.tabs button.on b{color:#fff}
+.q{background:var(--card);border:1px solid var(--grid);border-radius:8px;padding:14px;margin-bottom:14px}
+.q h2{font-size:1rem;margin:0 0 10px;color:var(--blue)}
+.q p{margin:0 0 10px;font-size:1.05rem}
+.opt{display:block;width:100%;font:inherit;text-align:left;padding:11px 12px;margin:6px 0;border:1.5px solid var(--grid);background:var(--bg);color:var(--ink);border-radius:6px;cursor:pointer}
+.opt:focus-visible,.tabs button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.opt.ok{border-color:var(--ok);background:var(--okbg)}
+.opt.ko{border-color:var(--red);background:var(--kobg)}
+.exp{margin-top:8px;padding:8px 10px;border-left:3px solid var(--blue);font-size:.95rem;color:var(--mut)}
+#res{font-size:1.2rem;text-align:center;padding:16px;background:var(--card);border:2px solid var(--blue);border-radius:8px}
+#res button{font:inherit;margin-top:10px;padding:10px 18px;border:0;border-radius:8px;background:var(--blue);color:#fff;cursor:pointer}
+</style>
+</head>
+<body>
+<main>
+<h1>QCM de révisions</h1>
+<p class="sub">Statistiques et calcul littéral – une seule bonne réponse par question.</p>
+<div class="tabs" id="tabs"></div>
+<div id="quiz"></div>
+<div id="res" hidden></div>
+</main>
+<script>
+var D=[
+{t:"QCM 1",s:"Statistiques",q:[
+{q:"Quelle est la moyenne de la série 4 ; 6 ; 11 ; 7 ?",o:["7","6","8","28"],e:"(4 + 6 + 11 + 7) ÷ 4 = 28 ÷ 4 = 7. Il ne faut pas oublier de diviser par l'effectif."},
+{q:"Une élève a 10 avec le coefficient 2 et 14 avec le coefficient 3. Quelle est sa moyenne ?",o:["12,4","12","12,5","62"],e:"(2×10 + 3×14) ÷ (2+3) = 62 ÷ 5 = 12,4. Piège : (10+14)÷2 = 12 oublie les coefficients."},
+{q:"Quelle est la médiane de la série 3 ; 9 ; 4 ; 12 ; 7 ?",o:["7","4","9","7,5"],e:"On trie d'abord : 3 ; 4 ; 7 ; 9 ; 12. N = 5 (impair), la médiane est la 3e valeur : 7. Sans tri, on trouverait 4."},
+{q:"Quelle est la médiane de la série 5 ; 1 ; 9 ; 3 ?",o:["4","4,5","3","5"],e:"Tri : 1 ; 3 ; 5 ; 9. N = 4 (pair) : moyenne des 2e et 3e valeurs = (3+5) ÷ 2 = 4. Piège : 4,5 est la moyenne, pas la médiane."},
+{q:"Dans une classe de 20 élèves, 5 ont eu 12. Quelle est la fréquence de la note 12 ?",o:["0,25 soit 25 %","5","0,5 soit 50 %","4"],e:"Fréquence = effectif de la valeur ÷ effectif total = 5 ÷ 20 = 0,25, donc 25 %. Une fréquence est toujours comprise entre 0 et 1."}]},
+{t:"QCM 2",s:"Calcul littéral : réduire et développer",q:[
+{q:"Simplifier 3 × x × 4.",o:["12x","34x","7x","12 + x"],e:"On supprime les « × » inutiles : 3 × 4 × x = 12x. Attention : 2 × 3 ≠ 23 !"},
+{q:"Réduire 5x + 2x² + 3 − 2x + x².",o:["3x² + 3x + 3","3x³ + 3x + 3","6x² + 3","3x² + 7x + 3"],e:"On regroupe les termes semblables : x² (2+1 = 3), x (5−2 = 3), nombres (3). On ne mélange jamais x et x²."},
+{q:"Développer 2x(3x − 4).",o:["6x² − 8x","6x² − 4","5x² − 8x","6x − 8x"],e:"Simple distributivité : 2x × 3x − 2x × 4 = 6x² − 8x. Le facteur 2x multiplie chaque terme."},
+{q:"Développer (x + 3)(2x − 1).",o:["2x² + 5x − 3","2x² − 3","2x² + 7x − 3","2x² + 5x + 3"],e:"Double distributivité : 2x² − x + 6x − 3 = 2x² + 5x − 3. Attention au signe de 3 × (−1)."},
+{q:"Que vaut 2x × 3x ?",o:["6x²","6x","5x²","5x"],e:"2 × 3 = 6 et x × x = x². Donc 6x². Piège : 2x + 3x donnerait 5x, mais ici c'est un produit."}]},
+{t:"QCM 3",s:"Calcul littéral : factoriser",q:[
+{q:"Factoriser 6x + 18 avec le plus grand facteur commun.",o:["6(x + 3)","3(2x + 6)","6(x + 18)","2(3x + 9)"],e:"6x + 18 = 6 × x + 6 × 3 = 6(x + 3). Les autres réponses sont justes mais incomplètes : 6 est le plus grand facteur commun."},
+{q:"Factoriser 15x² + 5x.",o:["5x(3x + 1)","5x(3x)","5(3x² + x)","5x(3x + 5)"],e:"Facteur commun : 5x. 15x² = 5x × 3x et 5x = 5x × 1. On n'oublie pas le 1 : 5x(3x + 1)."},
+{q:"Factoriser 25x² − 49.",o:["(5x + 7)(5x − 7)","(5x − 7)²","(25x + 49)(25x − 49)","(5x + 7)²"],e:"25x² = (5x)² et 49 = 7². Avec a² − b² = (a + b)(a − b), on obtient (5x + 7)(5x − 7)."},
+{q:"Quelle expression peut se factoriser avec a² − b² ?",o:["4x² − 25","x² + 9","2x − 9","x² − 3x"],e:"Il faut une différence de deux carrés : 4x² − 25 = (2x)² − 5². Une somme de carrés (x² + 9) ne convient pas."},
+{q:"Laquelle de ces égalités est vraie pour tout x ?",o:["3(x + 4) = 3x + 12","3(x + 4) = 3x + 4","3(x + 4) = x + 12","3(x + 4) = 3x + 7"],e:"Le 3 multiplie les deux termes de la parenthèse : 3 × x + 3 × 4 = 3x + 12. C'est le lien entre développer et factoriser."}]}
+];
+function rnd(n){var a=new Uint32Array(1);crypto.getRandomValues(a);return a[0]%n}
+function shuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=rnd(i+1),t=a[i];a[i]=a[j];a[j]=t}return a}
+var cur=0,score=0,done=0;
+function tabs(){var h="";D.forEach(function(d,i){h+='<button class="'+(i==cur?'on':'')+'" onclick="go('+i+')"><b>'+d.t+'</b>'+d.s+'</button>'});document.getElementById("tabs").innerHTML=h}
+function go(i){cur=i;score=0;done=0;tabs();var box=document.getElementById("quiz");box.innerHTML="";document.getElementById("res").hidden=true;
+D[i].q.forEach(function(q,k){var d=document.createElement("div");d.className="q";var h="<h2>Question "+(k+1)+" sur 5</h2><p>"+q.q+"</p>";d.innerHTML=h;
+shuf(q.o.map(function(t,idx){return{t:t,c:idx===0}})).forEach(function(o){var b=document.createElement("button");b.className="opt";b.textContent=o.t;if(o.c)b.dataset.c=1;b.onclick=function(){pick(d,b,o.c,q.e)};d.appendChild(b)});box.appendChild(d)})}
+function pick(d,b,c,e){if(d.dataset.l)return;d.dataset.l=1;var bs=d.querySelectorAll(".opt");
+bs.forEach(function(x){x.style.cursor="default"});
+if(c){b.classList.add("ok");score++}else{b.classList.add("ko");bs.forEach(function(x){if(x.dataset.c)x.classList.add("ok")})}
+var p=document.createElement("div");p.className="exp";p.textContent=(c?"Bravo ! ":"Pas tout à fait. ")+e;d.appendChild(p);done++;if(done==5)fin()}
+function fin(){var r=document.getElementById("res");r.hidden=false;var m=score==5?"Sans faute !":score>=3?"Bon travail, relis les explications des erreurs.":"À retravailler : reprends le cours puis recommence.";
+r.innerHTML="Score : <b>"+score+" / 5</b><br>"+m+"<br><button onclick=\"go(cur)\">Recommencer</button>";r.scrollIntoView({behavior:"smooth",block:"center"})}
+go(0);
+</script>
+</body>
+</html>
