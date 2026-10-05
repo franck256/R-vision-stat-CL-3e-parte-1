@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>QCM de révisions – 3ème</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#fbfaf6;--ink:#1d2a44;--grid:#dfe6f2;--blue:#1f5fd1;--red:#c0392b;--ok:#1e8a4c;--okbg:#e4f5ea;--kobg:#fbe6e3;--card:#fff;--mut:#5b6785}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141a28;--ink:#e6ebf7;--grid:#222c42;--blue:#7ea8ff;--red:#ff8a7a;--ok:#5fd68f;--okbg:#173324;--kobg:#3a1c1c;--card:#1b2336;--mut:#9aa6c4}}
+:root[data-theme="dark"]{--bg:#141a28;--ink:#e6ebf7;--grid:#222c42;--blue:#7ea8ff;--red:#ff8a7a;--ok:#5fd68f;--okbg:#173324;--kobg:#3a1c1c;--card:#1b2336;--mut:#9aa6c4}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*:before,*:after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 Georgia,"Times New Roman",serif;
+background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px}
+main{max-width:640px;margin:0 auto;padding:20px 16px 48px;border-left:2px solid var(--red);background:var(--bg)}
+h1{font-size:1.6rem;margin:.2em 0 .1em}
+.sub{color:var(--mut);margin:0 0 18px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.tabs button{flex:1 1 150px;font:inherit;padding:12px;border:2px solid var(--blue);background:var(--card);color:var(--ink);border-radius:8px;cursor:pointer;text-align:left}
+.tabs button b{display:block;color:var(--blue)}
+.tabs button.on{background:var(--blue);color:#fff}.tabs button.on b{color:#fff}
+.again{font:inherit;margin:0 0 18px;padding:10px 18px;border:0;border-radius:8px;background:var(--red);color:#fff;cursor:pointer}
+.q{background:var(--card);border:1px solid var(--grid);border-radius:8px;padding:14px;margin-bottom:14px}
+.q h2{font-size:1rem;margin:0 0 10px;color:var(--blue)}
+.q p{margin:0 0 10px;font-size:1.05rem}
+.opt{display:block;width:100%;font:inherit;text-align:left;padding:11px 12px;margin:6px 0;border:1.5px solid var(--grid);background:var(--bg);color:var(--ink);border-radius:6px;cursor:pointer}
+button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.opt.ok{border-color:var(--ok);background:var(--okbg)}
+.opt.ko{border-color:var(--red);background:var(--kobg)}
+.exp{margin-top:8px;padding:8px 10px;border-left:3px solid var(--blue);font-size:.95rem;color:var(--mut)}
+#res{font-size:1.2rem;text-align:center;padding:16px;background:var(--card);border:2px solid var(--blue);border-radius:8px}
+#res .again{margin:10px 0 0}
+</style>
+</head>
+<body>
+<main>
+<h1>QCM de révisions</h1>
+<p class="sub">Statistiques et calcul littéral – de nouvelles questions à chaque fois.</p>
+<div class="tabs" id="tabs"></div>
+<button class="again" onclick="go(cur)">Recommencer</button>
+<div id="quiz"></div>
+<div id="res" hidden></div>
+</main>
+<script>
+var M="−";
+function rnd(n){var a=new Uint32Array(1);crypto.getRandomValues(a);return a[0]%n}
+function ri(a,b){return a+rnd(b-a+1)}
+function pk(a){return a[rnd(a.length)]}
+function shuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=rnd(i+1),t=a[i];a[i]=a[j];a[j]=t}return a}
+function fmt(n){return String(Math.round(n*1000)/1000).replace(".",",")}
+function gcd(a,b){return b?gcd(b,a%b):a}
+function sum(v){return v.reduce(function(a,b){return a+b})}
+function srt(v){return v.slice().sort(function(a,b){return a-b})}
+function T(l){var s="";l.forEach(function(u){var v=u[0];if(!v)return;var ab=Math.abs(v),x=u[1]==2?"x²":u[1]==1?"x":"",n=(x&&ab==1)?"":ab;s+=s?(v<0?" − ":" + "):(v<0?M:"");s+=n+x});return s||"0"}
+function P(a,b,k){return T([[a,2],[b,1],[k,0]])}
+function L(a,b){return T([[a,1],[b,0]])}
+var G=[
+[ /* Statistiques */
+function(){var m=ri(4,15),a,b,c,d;do{a=ri(1,20);b=ri(1,20);c=ri(1,20);d=4*m-a-b-c}while(d<1||d>20);var v=shuf([a,b,c,d]),s=4*m;
+return{q:"Quelle est la moyenne de la série "+v.join(" ; ")+" ?",c:String(m),d:[m+1,m-1,s,m+2].map(String),e:"("+v.join(" + ")+") ÷ 4 = "+s+" ÷ 4 = "+m+". Il ne faut pas oublier de diviser par l'effectif."}},
+function(){var p=pk([[2,3],[3,2],[1,3],[3,1]]),n1,n2;do{n1=ri(6,18);n2=ri(6,18)}while(n1==n2);var c1=p[0],c2=p[1],s=c1+c2,t=n1*c1+n2*c2,r=t/s;
+return{q:"Une élève a "+n1+" avec le coefficient "+c1+" et "+n2+" avec le coefficient "+c2+". Quelle est sa moyenne ?",c:fmt(r),d:[fmt((n1+n2)/2),fmt((n1*c2+n2*c1)/s),String(t),fmt(r+1)],e:"("+c1+"×"+n1+" + "+c2+"×"+n2+") ÷ ("+c1+" + "+c2+") = "+t+" ÷ "+s+" = "+fmt(r)+". Piège : "+fmt((n1+n2)/2)+" oublie les coefficients."}},
+function(){var v=[];while(v.length<5){var x=ri(2,25);if(v.indexOf(x)<0)v.push(x)}var s=srt(v),m=s[2];
+return{q:"Quelle est la médiane de la série "+v.join(" ; ")+" ?",c:String(m),d:[String(v[2]),fmt(sum(v)/5),String(s[1]),String(s[3]),String(m+1),String(m-1),String(s[0]),String(s[4])],e:"On trie : "+s.join(" ; ")+". N = 5 (impair), la médiane est la 3e valeur : "+m+"."+(v[2]!=m?" Sans tri, on prendrait "+v[2]+" : c'est le piège.":"")}},
+function(){var v,s;do{v=[];for(var i=0;i<6;i++)v.push(ri(2,20));s=srt(v)}while(s[2]==s[3]);var m=(s[2]+s[3])/2;
+return{q:"Quelle est la médiane de la série "+v.join(" ; ")+" ?",c:fmt(m),d:[fmt(sum(v)/6),String(s[2]),String(s[3]),fmt(m+1),fmt(m-1),String(s[1]),fmt(m+2),String(s[5])],e:"On trie : "+s.join(" ; ")+". N = 6 (pair) : moyenne des 3e et 4e valeurs = ("+s[2]+" + "+s[3]+") ÷ 2 = "+fmt(m)+". "+(sum(v)/6!=m?"Piège : ne pas confondre avec la moyenne ("+fmt(sum(v)/6)+").":"")}},
+function(){var N=pk([20,25,40,50]),k=ri(1,N-1),f=k/N,g=(N-k)/N;
+return{q:"Dans un groupe de "+N+" élèves, "+k+" ont eu 12. Quelle est la fréquence de la note 12 ?",c:fmt(f)+" soit "+fmt(f*100)+" %",d:[String(k),fmt(g)+" soit "+fmt(g*100)+" %",fmt(N/k),fmt(f*100),fmt(k/(N-k))],e:"Fréquence = effectif de la valeur ÷ effectif total = "+k+" ÷ "+N+" = "+fmt(f)+", soit "+fmt(f*100)+" %. Une fréquence est toujours comprise entre 0 et 1."}}
+],
+[ /* Réduire et développer */
+function(){var a=ri(2,9),b=ri(2,9);
+return{q:"Simplifier "+a+" × x × "+b+".",c:a*b+"x",d:[""+a+b+"x",(a+b)+"x",a*b+" + x",a*b+"x²"],e:"On supprime les « × » inutiles : "+a+" × "+b+" × x = "+a*b+"x. Attention : 2 × 3 ≠ 23 !"}},
+function(){var a1,a2,b1,b2,c,A,B;do{a1=ri(1,5);a2=ri(1,5);b1=ri(1,6);b2=pk([-1,1])*ri(1,6);c=ri(1,9);A=a1+a2;B=b1+b2}while(B==0);
+var t=shuf([[a1,2],[b1,1],[c,0],[a2,2],[b2,1]]);
+return{q:"Réduire "+T(t)+".",c:P(A,B,c),d:[P(A+B,0,c),P(A,-B,c),P(A+1,B,c),P(A,B+1,c),P(A,A+B,c)],e:"On regroupe les termes semblables : x² → "+A+", x → "+B+", nombres → "+c+". On ne mélange jamais x et x²."}},
+function(){var k=ri(2,6),a=ri(2,5),b=pk([-1,1])*ri(1,9);
+return{q:"Développer "+k+"x("+L(a,b)+").",c:P(k*a,k*b,0),d:[P(k*a,b,0),P(k*a+k*b,0,0),P(k*a,-k*b,0),P(k+a,k*b,0)],e:"Simple distributivité : "+k+"x × "+a+"x + "+k+"x × ("+b+") = "+P(k*a,k*b,0)+". Le facteur "+k+"x multiplie chaque terme de la parenthèse."}},
+function(){var a=ri(1,6),c=ri(2,4),b=pk([-1,1])*ri(1,6);
+return{q:"Développer (x + "+a+")("+L(c,b)+").",c:P(c,b+a*c,a*b),d:[P(c,b+a*c,-a*b),P(c,b+a,a*b),P(c,a*c,a*b),P(c,b+a*c,a+b),P(c,b+a*c+1,a*b),P(c,b+a*c-1,a*b)],e:"Double distributivité : x × "+c+"x = "+c+"x² ; termes en x : "+b+"x + "+a*c+"x = "+(b+a*c)+"x ; constantes : "+a+" × ("+b+") = "+a*b+"."}},
+function(){var a=ri(2,7),b;do{b=ri(2,7)}while(b==a);
+return{q:"Que vaut "+a+"x × "+b+"x ?",c:a*b+"x²",d:[a*b+"x",(a+b)+"x²",(a+b)+"x",a*b+"x³"],e:a+" × "+b+" = "+a*b+" et x × x = x². Donc "+a*b+"x². Piège : "+a+"x + "+b+"x donnerait "+(a+b)+"x, mais ici c'est un produit."}}
+],
+[ /* Factoriser */
+function(){var g=pk([4,6,8,9,10,12]),p,q;do{p=ri(1,4);q=ri(2,7)}while(gcd(p,q)!=1);var d=g%2==0?2:3,h=g/d;
+return{q:"Factoriser "+L(g*p,g*q)+" avec le plus grand facteur commun.",c:g+"("+L(p,q)+")",d:[d+"("+L(h*p,h*q)+")",g+"("+L(p,g*q)+")",g+"("+L(p,-q)+")",g+"("+L(p,q+1)+")"],e:L(g*p,g*q)+" = "+g+" × "+(p>1?p:"")+"x + "+g+" × "+q+" = "+g+"("+L(p,q)+"). Le plus grand facteur commun est "+g+" : une réponse avec "+d+" est juste mais incomplète."}},
+function(){var g=ri(2,6),p,q;do{p=ri(2,4);q=ri(1,5)}while(gcd(p,q)!=1);
+return{q:"Factoriser "+P(g*p,g*q,0)+".",c:g+"x("+L(p,q)+")",d:[g+"("+T([[p,2],[q,1]])+")","x("+L(g*p,g*q)+")",g+"x("+L(p,g*q)+")",g+"x("+L(p,-q)+")"],e:"Facteur commun : "+g+"x. "+g*p+"x² = "+g+"x × "+p+"x et "+g*q+"x = "+g+"x × "+q+". "+(q==1?"On n'oublie pas le 1 ! ":"")+"Résultat : "+g+"x("+L(p,q)+")."}},
+function(){var m=ri(2,9),n=ri(2,11),s=m+"x",t=n;
+return{q:"Factoriser "+T([[m*m,2],[-n*n,0]])+".",c:"("+s+" + "+t+")("+s+" − "+t+")",d:["("+s+" − "+t+")²","("+m*m+"x + "+n*n+")("+m*m+"x − "+n*n+")","("+s+" + "+t+")²","("+m*m+"x + "+n+")("+m*m+"x − "+n+")"],e:m*m+"x² = ("+s+")² et "+n*n+" = "+n+"². Avec a² − b² = (a + b)(a − b), on obtient ("+s+" + "+n+")("+s+" − "+n+")."}},
+function(){var m=ri(2,7),n=ri(2,9);
+return{q:"Quelle expression peut se factoriser avec a² − b² ?",c:T([[m*m,2],[-n*n,0]]),d:[T([[m*m,2],[n*n,0]]),T([[m,1],[-n*n,0]]),T([[1,2],[-m,1]]),T([[m,1],[n,0]])],e:"Il faut une différence de deux carrés : "+T([[m*m,2],[-n*n,0]])+" = ("+m+"x)² − "+n+"². Une somme de carrés ne se factorise pas ainsi."}},
+function(){var k=ri(2,9),m=ri(2,9),l=k+"(x + "+m+") = ";
+return{q:"Laquelle de ces égalités est vraie pour tout x ?",c:l+k+"x + "+k*m,d:[l+k+"x + "+m,l+"x + "+k*m,l+k+"x + "+(k+m),l+k+"x + "+(k*m+1)],e:"Le "+k+" multiplie les deux termes de la parenthèse : "+k+" × x + "+k+" × "+m+" = "+k+"x + "+k*m+". C'est le lien entre développer et factoriser."}}
+]];
+var T0=[["QCM 1","Statistiques"],["QCM 2","Calcul littéral : réduire et développer"],["QCM 3","Calcul littéral : factoriser"]];
+var cur=0,score=0,done=0;
+function tabs(){var h="";T0.forEach(function(d,i){h+='<button class="'+(i==cur?'on':'')+'" onclick="go('+i+')"><b>'+d[0]+'</b>'+d[1]+'</button>'});document.getElementById("tabs").innerHTML=h}
+function go(i){cur=i;score=0;done=0;tabs();var box=document.getElementById("quiz");box.innerHTML="";document.getElementById("res").hidden=true;
+G[i].forEach(function(f,k){var q=f(),d=document.createElement("div");d.className="q";d.innerHTML="<h2>Question "+(k+1)+" sur 5</h2><p>"+q.q+"</p>";
+var pool=[];shuf(q.d.map(String)).forEach(function(x){if(x!=q.c&&pool.indexOf(x)<0)pool.push(x)});
+var opts=shuf([{t:q.c,c:1}].concat(pool.slice(0,3).map(function(x){return{t:x}})));
+opts.forEach(function(o){var b=document.createElement("button");b.className="opt";b.textContent=o.t;if(o.c)b.dataset.c=1;b.onclick=function(){pick(d,b,!!o.c,q.e)};d.appendChild(b)});box.appendChild(d)})}
+function pick(d,b,c,e){if(d.dataset.l)return;d.dataset.l=1;var bs=d.querySelectorAll(".opt");
+bs.forEach(function(x){x.style.cursor="default"});
+if(c){b.classList.add("ok");score++}else{b.classList.add("ko");bs.forEach(function(x){if(x.dataset.c)x.classList.add("ok")})}
+var p=document.createElement("div");p.className="exp";p.textContent=(c?"Bravo ! ":"Pas tout à fait. ")+e;d.appendChild(p);done++;if(done==5)fin()}
+function fin(){var r=document.getElementById("res");r.hidden=false;var m=score==5?"Sans faute !":score>=3?"Bon travail, relis les explications des erreurs.":"À retravailler : reprends le cours puis recommence.";
+r.innerHTML='Score : <b>'+score+' / 5</b><br>'+m+'<br><button class="again" onclick="go(cur);window.scrollTo(0,0)">Recommencer</button>';r.scrollIntoView({behavior:"smooth",block:"center"})}
+go(0);
+</script>
+</body>
+</html>
